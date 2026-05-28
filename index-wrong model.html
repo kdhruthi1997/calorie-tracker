@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NutriLens</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -29,7 +30,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
 
 .rings-wrap { display:flex; flex-direction:column; align-items:center; margin:4px 0 20px; position:relative; }
 .rings-svg { width:210px; height:210px; }
-.rings-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; width:130px; }
+.rings-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; width:120px; }
 .rings-center .big { font-size:34px; font-weight:700; letter-spacing:-1px; }
 .rings-center .lbl { font-size:12px; color:var(--muted); margin-top:1px; }
 .rings-center .rem { font-size:11px; color:var(--muted); margin-top:5px; }
@@ -59,7 +60,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
 .api-box input { width:100%; background:var(--surface2); border:0.5px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); font-size:13px; font-family:var(--font); margin-top:8px; }
 .model-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(74,222,128,0.12); border:0.5px solid rgba(74,222,128,0.3); border-radius:8px; padding:3px 8px; font-size:11px; color:var(--green); margin-top:8px; }
 
-.upload-zone { border:1.5px dashed var(--border); border-radius:20px; padding:36px 20px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; position:relative; overflow:hidden; margin-bottom:14px; }
+.upload-zone { border:1.5px dashed var(--border); border-radius:20px; padding:36px 20px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; position:relative; overflow:hidden; margin-bottom:14px; transition:border-color 0.2s; }
 .upload-zone .ti { font-size:38px; color:var(--muted); }
 .upload-zone p { font-size:14px; color:var(--muted); text-align:center; line-height:1.5; }
 .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
@@ -76,7 +77,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
 .note-text { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:14px; }
 .primary-btn { width:100%; background:var(--green); border:none; border-radius:12px; padding:14px; color:#0a0a0f; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font); margin-bottom:8px; }
 .secondary-btn { width:100%; background:var(--surface2); border:0.5px solid var(--border); border-radius:12px; padding:13px; color:var(--text); font-size:14px; font-weight:500; cursor:pointer; font-family:var(--font); display:flex; align-items:center; justify-content:center; gap:8px; }
-.error-card { background:rgba(248,113,113,0.08); border:0.5px solid rgba(248,113,113,0.25); border-radius:16px; padding:14px; margin-bottom:14px; font-size:13px; color:var(--red); line-height:1.6; display:none; }
+.error-card { background:rgba(248,113,113,0.08); border:0.5px solid rgba(248,113,113,0.25); border-radius:16px; padding:14px; margin-bottom:14px; font-size:13px; color:var(--red); line-height:1.5; display:none; }
 
 .profile-form { background:var(--surface); border:0.5px solid var(--border); border-radius:20px; padding:18px; margin-bottom:14px; }
 .frow { margin-bottom:14px; }
@@ -120,7 +121,10 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
 <body>
 <div class="app">
   <div class="header">
-    <div><h1 id="h-title">Today</h1><div class="date" id="h-date"></div></div>
+    <div>
+      <h1 id="h-title">Today</h1>
+      <div class="date" id="h-date"></div>
+    </div>
     <div style="font-size:13px;color:var(--muted)">NutriLens</div>
   </div>
 
@@ -136,9 +140,21 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
       </div>
     </div>
     <div class="macro-pills">
-      <div class="macro-pill"><div class="val" id="mp-carbs" style="color:var(--orange)">0g</div><div class="lbl">Carbs</div><div class="bar"><div class="bar-fill" id="bf-carbs" style="background:var(--orange);width:0%"></div></div></div>
-      <div class="macro-pill"><div class="val" id="mp-prot" style="color:var(--blue)">0g</div><div class="lbl">Protein</div><div class="bar"><div class="bar-fill" id="bf-prot" style="background:var(--blue);width:0%"></div></div></div>
-      <div class="macro-pill"><div class="val" id="mp-fat" style="color:var(--purple)">0g</div><div class="lbl">Fat</div><div class="bar"><div class="bar-fill" id="bf-fat" style="background:var(--purple);width:0%"></div></div></div>
+      <div class="macro-pill">
+        <div class="val" id="mp-carbs" style="color:var(--orange)">0g</div>
+        <div class="lbl">Carbs</div>
+        <div class="bar"><div class="bar-fill" id="bf-carbs" style="background:var(--orange);width:0%"></div></div>
+      </div>
+      <div class="macro-pill">
+        <div class="val" id="mp-prot" style="color:var(--blue)">0g</div>
+        <div class="lbl">Protein</div>
+        <div class="bar"><div class="bar-fill" id="bf-prot" style="background:var(--blue);width:0%"></div></div>
+      </div>
+      <div class="macro-pill">
+        <div class="val" id="mp-fat" style="color:var(--purple)">0g</div>
+        <div class="lbl">Fat</div>
+        <div class="bar"><div class="bar-fill" id="bf-fat" style="background:var(--purple);width:0%"></div></div>
+      </div>
     </div>
     <div class="section-title">Today's Meals</div>
     <div id="meals-list"></div>
@@ -148,9 +164,9 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
   <!-- SCAN -->
   <div class="page" id="page-scan">
     <div class="api-box">
-      <div class="api-label">Gemini API Key — <a href="https://aistudio.google.com/app/apikey" target="_blank">Get free at aistudio.google.com ↗</a></div>
-      <input type="password" id="gemini-key" placeholder="AIzaSy..." />
-      <div class="model-badge"><i class="ti ti-bolt" aria-hidden="true"></i> gemini-2.5-flash · free tier</div>
+      <div class="api-label">Google Gemini API Key — <a href="https://aistudio.google.com/app/apikey" target="_blank">Get free key at aistudio.google.com ↗</a></div>
+      <input type="password" id="gemini-key" placeholder="AIza..." />
+      <div class="model-badge"><i class="ti ti-bolt" aria-hidden="true"></i> Gemini 2.5 Flash · 500 scans/day free</div>
     </div>
     <div class="error-card" id="error-card"></div>
     <img id="preview-img" class="preview-img" alt="Food preview" />
@@ -192,7 +208,10 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
       <div class="legend-item"><div class="ldot" style="background:rgba(251,146,60,0.4)"></div>Over goal</div>
       <div class="legend-item"><div class="ldot" style="background:rgba(248,113,113,0.3)"></div>Nothing logged</div>
     </div>
-    <div class="week-box"><h3>This Week</h3><div id="week-stats"></div></div>
+    <div class="week-box">
+      <h3>This Week</h3>
+      <div id="week-stats"></div>
+    </div>
   </div>
 
   <!-- PROFILE -->
@@ -201,13 +220,15 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
       <div class="frow"><label>Age</label><input type="number" id="f-age" placeholder="25" min="10" max="100" /></div>
       <div class="frow"><label>Height (cm)</label><input type="number" id="f-height" placeholder="170" /></div>
       <div class="frow"><label>Weight (kg)</label><input type="number" id="f-weight" placeholder="70" /></div>
-      <div class="frow"><label>Gender</label>
+      <div class="frow">
+        <label>Gender</label>
         <div class="gender-grid">
           <div class="gender-opt" data-g="male" onclick="pickGender('male')">Male</div>
           <div class="gender-opt" data-g="female" onclick="pickGender('female')">Female</div>
         </div>
       </div>
-      <div class="frow"><label>Activity Level</label>
+      <div class="frow">
+        <label>Activity Level</label>
         <select id="f-activity">
           <option value="1.2">Sedentary (desk job)</option>
           <option value="1.375">Light (1–3 days/week)</option>
@@ -216,7 +237,9 @@ body { background:var(--bg); color:var(--text); font-family:var(--font); min-hei
           <option value="1.9">Extremely active (2x/day)</option>
         </select>
       </div>
-      <div class="frow"><button class="primary-btn" onclick="calcTDEE()" style="margin-top:4px">Calculate Maintenance Calories</button></div>
+      <div class="frow">
+        <button class="primary-btn" onclick="calcTDEE()" style="margin-top:4px">Calculate Maintenance Calories</button>
+      </div>
     </div>
     <div class="tdee-card" id="tdee-card">
       <div style="font-size:13px;color:var(--muted);margin-bottom:4px">Maintenance Calories (TDEE)</div>
@@ -248,9 +271,7 @@ const saveMeals = (k,v) => { LS.s('m_'+k,v); syncDay(k,v); };
 const getProfile = () => LS.g('profile') || { goal:2000 };
 let calY, calM, currentResult=null, currentFile=null;
 
-// Correct model name per official Google docs (May 2026)
-const GEMINI_MODEL = 'gemini-2.5-flash';
-const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const GEMINI_MODEL = 'gemini-2.5-flash-preview-05-20';
 
 function go(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab===tab));
@@ -330,101 +351,51 @@ document.getElementById('file-input').addEventListener('change',e=>{
 document.getElementById('scan-btn').addEventListener('click',analyseFood);
 document.getElementById('add-btn').addEventListener('click',addMeal);
 
+function showError(msg) {
+  const el=document.getElementById('error-card');
+  el.textContent=msg; el.style.display='block';
+}
+
 async function analyseFood() {
   const key=document.getElementById('gemini-key').value.trim();
   if(!key){ alert('Please enter your Gemini API key.\nGet one free at aistudio.google.com'); return; }
   if(!currentFile){ alert('Please select a food image first.'); return; }
   LS.s('gkey',key);
-
   document.getElementById('loading-card').style.display='block';
   document.getElementById('result-card').style.display='none';
   document.getElementById('error-card').style.display='none';
   document.getElementById('scan-btn').style.display='none';
 
-  // Convert image to base64
-  const b64 = await new Promise((res,rej)=>{
-    const r=new FileReader();
-    r.onload=()=>res(r.result.split(',')[1]);
-    r.onerror=rej;
-    r.readAsDataURL(currentFile);
-  });
-  const mime = currentFile.type || 'image/jpeg';
-
-  const body = {
-    contents: [{
-      parts: [
-        { inline_data: { mime_type: mime, data: b64 } },
-        { text: 'You are a nutrition expert. Analyse this food image and respond ONLY with a valid JSON object — no markdown, no code fences, no extra text. Use this exact format: {"name":"dish name","calories":number,"carbs":number,"protein":number,"fat":number,"note":"brief 1-sentence note about the estimate"}. All macros in grams. Estimate for the full visible portion.' }
-      ]
-    }],
-    generationConfig: {
-      // Disable thinking to avoid extra tokens wrapping the JSON
-      thinkingConfig: { thinkingBudget: 0 },
-      temperature: 0.1,
-      maxOutputTokens: 300
-    }
-  };
+  const b64=await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(currentFile); });
+  const mime=currentFile.type||'image/jpeg';
 
   try {
-    // Key goes in x-goog-api-key header per official Google docs
-    const resp = await fetch(GEMINI_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': key
-      },
-      body: JSON.stringify(body)
+    const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{ parts:[
+          { inline_data:{ mime_type:mime, data:b64 } },
+          { text:'Analyse this food image. Reply ONLY with a raw JSON object — no markdown fences, no explanation. Format exactly: {"name":"dish name","calories":number,"carbs":number,"protein":number,"fat":number,"note":"1-sentence estimation note"}. Estimate for the full visible portion shown.' }
+        ]}]
+      })
     });
-
-    const data = await resp.json();
-
-    if (!resp.ok) {
-      const msg = data?.error?.message || `HTTP ${resp.status}`;
-      throw new Error(msg);
-    }
-
-    // Extract text from response
-    const rawText = data?.candidates?.[0]?.content?.parts
-      ?.filter(p => p.text)
-      ?.map(p => p.text)
-      ?.join('') || '';
-
-    if (!rawText) throw new Error('Empty response from Gemini. Try again.');
-
-    // Strip any accidental markdown fences
-    const clean = rawText.replace(/```json|```/gi,'').trim();
-
-    // Find JSON object in the response
-    const jsonMatch = clean.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('Could not find JSON in response: ' + clean.slice(0,100));
-
-    currentResult = JSON.parse(jsonMatch[0]);
-
-    // Validate required fields
-    if (!currentResult.calories || !currentResult.name) {
-      throw new Error('Incomplete nutrition data returned. Please try again.');
-    }
-
-    document.getElementById('r-name').textContent = currentResult.name;
-    document.getElementById('r-cal').textContent = Math.round(currentResult.calories);
-    document.getElementById('r-carbs').textContent = Math.round(currentResult.carbs||0)+'g';
-    document.getElementById('r-prot').textContent = Math.round(currentResult.protein||0)+'g';
-    document.getElementById('r-fat').textContent = Math.round(currentResult.fat||0)+'g';
-    document.getElementById('r-note').textContent = currentResult.note||'';
+    const data=await resp.json();
+    if(data.error) throw new Error(data.error.message);
+    const raw=data.candidates[0].content.parts[0].text.replace(/```json|```/g,'').trim();
+    currentResult=JSON.parse(raw);
+    document.getElementById('r-name').textContent=currentResult.name;
+    document.getElementById('r-cal').textContent=Math.round(currentResult.calories);
+    document.getElementById('r-carbs').textContent=Math.round(currentResult.carbs)+'g';
+    document.getElementById('r-prot').textContent=Math.round(currentResult.protein)+'g';
+    document.getElementById('r-fat').textContent=Math.round(currentResult.fat)+'g';
+    document.getElementById('r-note').textContent=currentResult.note||'';
     document.getElementById('result-card').style.display='block';
-
   } catch(err) {
-    let msg = err.message || 'Unknown error';
-    if (msg.includes('API_KEY_INVALID') || msg.includes('API key not valid')) {
-      msg = 'Invalid API key. Double-check it at aistudio.google.com → API keys.';
-    } else if (msg.includes('429') || msg.includes('RESOURCE_EXHAUSTED')) {
-      msg = 'Rate limit reached. You get 10 requests/min and 500/day free. Wait a minute and try again.';
-    } else if (msg.includes('not found') || msg.includes('404')) {
-      msg = 'Model not found. Make sure your API key has Gemini API enabled in Google AI Studio.';
-    }
-    const el = document.getElementById('error-card');
-    el.textContent = '⚠ ' + msg;
-    el.style.display = 'block';
+    let msg=err.message;
+    if(msg.includes('429')) msg='Rate limit hit. Try again in a minute — you get 500 free scans/day with Gemini 2.5 Flash.';
+    else if(msg.includes('API_KEY_INVALID')||msg.includes('400')) msg='Invalid API key. Check it at aistudio.google.com and paste it again.';
+    showError('Analysis failed: '+msg);
     document.getElementById('scan-btn').style.display='flex';
   } finally {
     document.getElementById('loading-card').style.display='none';
@@ -434,13 +405,7 @@ async function analyseFood() {
 function addMeal() {
   if(!currentResult) return;
   const k=todayKey(),meals=getMeals(k);
-  meals.push({
-    name: currentResult.name,
-    cal: currentResult.calories,
-    carbs: currentResult.carbs||0,
-    prot: currentResult.protein||0,
-    fat: currentResult.fat||0
-  });
+  meals.push({name:currentResult.name,cal:currentResult.calories,carbs:currentResult.carbs,prot:currentResult.protein,fat:currentResult.fat});
   saveMeals(k,meals);
   currentFile=null; currentResult=null;
   document.getElementById('preview-img').style.display='none';
@@ -474,11 +439,7 @@ function renderCal() {
 function renderWeek(){
   const now=new Date(),ws=new Date(now); ws.setDate(now.getDate()-now.getDay());
   let tC=0,tCa=0,tP=0,tF=0,lg=0;
-  for(let i=0;i<7;i++){
-    const d=new Date(ws); d.setDate(ws.getDate()+i);
-    const meals=getMeals(dateKey(d));
-    if(meals.length){lg++;meals.forEach(m=>{tC+=m.cal;tCa+=m.carbs;tP+=m.prot;tF+=m.fat;});}
-  }
+  for(let i=0;i<7;i++){const d=new Date(ws);d.setDate(ws.getDate()+i);const meals=getMeals(dateKey(d));if(meals.length){lg++;meals.forEach(m=>{tC+=m.cal;tCa+=m.carbs;tP+=m.prot;tF+=m.fat;});}}
   document.getElementById('week-stats').innerHTML=`
 <div class="wrow"><span>Days logged</span><span>${lg}/7</span></div>
 <div class="wrow"><span>Avg calories/day</span><span style="color:var(--green)">${lg?Math.round(tC/lg):0} kcal</span></div>
