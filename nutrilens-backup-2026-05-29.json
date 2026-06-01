@@ -1,0 +1,15 @@
+{
+  "profile": {
+    "goal": 1737,
+    "proteinTarget": 142,
+    "goalMode": "loss",
+    "age": 29,
+    "height": 150,
+    "weight": 71,
+    "gender": "female",
+    "activity": 1.55,
+    "tdee": 2237
+  },
+  "_exported": "2026-05-29T09:07:41.867Z",
+  "_version": "1.0"
+}
